@@ -1,0 +1,5 @@
+SOS is an extremely simple operating system for x86 (i386).
+
+- Build a cross-compiler by following the steps at https://wiki.osdev.org/GCC_Cross-Compiler#The_Build)
+- Compile and run SOS with `make install run`, use root if necessary
+- Feel free to edit the kernel to add any needed functionality
