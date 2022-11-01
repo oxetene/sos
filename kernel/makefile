@@ -1,23 +1,21 @@
 CC = i386-elf-gcc
+OBJ = enter.o kernel.o
 
 .DEFAULT_GOAL = install
 
 kernel.o: kernel.c
-	$(CC) -c $^ -ffreestanding -Os
+	$(CC) -c $< -Os -ffreestanding
 
 enter.o: enter.s
-	nasm -f elf $< -o enter.o
+	nasm -f elf $< -o $@
 
 boot.bin: boot.s
-	nasm -f bin $< -o boot.bin
+	nasm -f bin $< -o $@
 
-install: boot.bin enter.o kernel.o
-	$(CC) -T link.ld enter.o kernel.o -o kernel.bin -nostdlib -ffreestanding -lgcc
-	cat boot.bin kernel.bin > sos.img
+install: boot.bin $(OBJ)
+	$(CC) -T link.ld $(OBJ) -o kernel.bin -nostdlib -ffreestanding -lgcc
+	cat $< kernel.bin > sos.img
 	rm *.o *.bin
-
-clean:
-	rm *.img
 
 run:
 	qemu-system-i386 -fda sos.img
